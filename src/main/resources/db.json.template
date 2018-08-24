@@ -1,0 +1,30 @@
+[
+  {
+    "env": "local",
+    "db": "order",
+    "url": "jdbc:mysql://localhost:3306/order",
+    "username": "root",
+    "password": ""
+  },
+  {
+    "env": "qa",
+    "db": "order",
+    "url": "jdbc:mysql://qa-db-host:3306/order",
+    "username": "qa-db-username",
+    "password": "qa-db-password"
+  },
+  {
+    "env": "local",
+    "db": "user",
+    "url": "jdbc:mysql://localhost:3306/user",
+    "username": "root",
+    "password": ""
+  },
+  {
+    "env": "qa",
+    "db": "user",
+    "url": "jdbc:mysql://qa-db-host:3306/user",
+    "username": "qa-db-username",
+    "password": "qa-db-password"
+   }
+]

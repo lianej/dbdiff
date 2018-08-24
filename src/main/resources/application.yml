@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    continue-on-error: true
+logging:
+  level:
+    root: warn
+    com.thoughtworks: info
+
+
