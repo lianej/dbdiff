@@ -1,8 +1,5 @@
 package com.thoughtworks.utils;
 
-import java.util.StringJoiner;
-import java.util.stream.Stream;
-
 import static com.thoughtworks.utils.CommandExecutor.exec;
 
 public class GitCommandExecutor {
@@ -21,8 +18,8 @@ public class GitCommandExecutor {
 
   public void commit(String comments) {
     CommandExecutor.ExecResult result = git("commit -m '" + comments + "'");
-    result.getErrorMsg().ifPresent(System.out::println);
-    result.getMsg().ifPresent(System.out::println);
+    result.getErrorMsg().ifPresent(ConsolePrinter::print);
+    result.getMsg().ifPresent(ConsolePrinter::print);
   }
 
   public CommandExecutor.ExecResult git(String cmd) {
@@ -30,9 +27,8 @@ public class GitCommandExecutor {
   }
 
   public CommandExecutor.ExecResult git(String... cmd) {
-    StringJoiner joiner = new StringJoiner(" ");
-    Stream.of(cmd).forEach(joiner::add);
-    return exec("git -C " + gitDir + " " + joiner.toString());
+    String gitCmd = String.join(" ", cmd);
+    return exec("git -C " + gitDir + " " + gitCmd);
   }
 
   public void initIfNecessary() {

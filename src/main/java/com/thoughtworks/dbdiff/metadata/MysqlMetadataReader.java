@@ -24,7 +24,7 @@ public class MysqlMetadataReader implements MetadataReader {
         .map(
             executor ->
                 executor
-                    .queryForList("show tables", String.class)
+                    .queryForStringList("show tables")
                     .stream()
                     .map(
                         table -> {

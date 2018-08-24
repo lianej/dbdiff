@@ -1,5 +1,5 @@
 {
-  "type":"local",
-  "url":"/Users/wjyan/dbdiff_repo",
+  "type":"remote_ssh",
+  "url":"",
   "authorization":""
 }

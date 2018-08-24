@@ -25,8 +25,8 @@ public class SQLExecutor {
     this.db = dbConfiguration.getDb();
   }
 
-  public <T> List<T> queryForList(String sql, Class<T> returnType) {
-    return jdbcTemplate.queryForList(sql, returnType);
+  public List<String> queryForStringList(String sql) {
+    return jdbcTemplate.queryForList(sql, String.class);
   }
 
   public MapWrapper queryForMap(String sql) {
