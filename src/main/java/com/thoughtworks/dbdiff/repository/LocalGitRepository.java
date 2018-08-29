@@ -43,18 +43,13 @@ public class LocalGitRepository implements DDLRepository {
   @Override
   public void storeData(List<DDLData> ddlData) {
     String now = dateFormatter.format(LocalDateTime.now());
-    CommandExecutor.exec("rm -rf " + repoRootDir.getAbsolutePath() + "/*.sql");
     ddlData
         .stream()
         .collect(groupingBy(DDLData::getEnv))
         .forEach(
             (env, data) -> {
-              this.gitCommandExecutor.initIfNecessary();
-              this.gitCommandExecutor.checkout(env);
+              prepareEnvRepo(env);
               String comments = env + "_" + now;
-              String fileName = env + ".txt";
-              File descriptionFile = FileUtils.writeAsFile(this.repoRootDir, fileName, comments);
-              this.gitCommandExecutor.git("add", descriptionFile.getAbsolutePath());
               for (DDLData ddl : data) {
                 File dbDir = FileUtils.createDirIfNecessary(this.repoRootDir, ddl.getDb());
                 File file = FileUtils.writeAsFile(dbDir, ddl.getTable() + ".sql", ddl.getDdl());
@@ -62,5 +57,11 @@ public class LocalGitRepository implements DDLRepository {
               }
               this.gitCommandExecutor.commit(comments);
             });
+  }
+
+  private void prepareEnvRepo(String env) {
+    this.gitCommandExecutor.initIfNecessary();
+    this.gitCommandExecutor.checkout(env);
+    CommandExecutor.exec("find "+repoRootDir.getAbsolutePath()+" -name '*.sql' -exec rm -f {} ;");
   }
 }

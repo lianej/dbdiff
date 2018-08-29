@@ -2,6 +2,7 @@ package com.thoughtworks.utils;
 
 import com.thoughtworks.dbdiff.DBDiffException;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class CommandExecutor {
             ExecResult result = new ExecResult();
             result.errorMsg = Optional.ofNullable(readContent(pro.getErrorStream()));
             result.msg = Optional.ofNullable(readContent(pro.getInputStream()));
+            result.errorMsg.filter(StringUtils::hasText).ifPresent(ConsolePrinter::print);
             return result;
         } catch (IOException e) {
             throw new DBDiffException(e);
