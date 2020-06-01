@@ -18,18 +18,17 @@ public class MysqlMetadataReader implements MetadataReader {
 
   @Override
   public List<DDLData> readDDL(String env) {
-    return dataSourceManager
-        .findExecutorsByEnv(env)
-        .stream()
+    return dataSourceManager.findExecutorsByEnv(env).stream()
         .map(
             executor ->
-                executor
-                    .queryForStringList("show tables")
-                    .stream()
+                executor.queryForStringList("show tables").stream()
                     .map(
                         table -> {
                           MapWrapper ddlResult =
                               executor.queryForMap("show create table `" + table + "`");
+                          if (ddlResult == null) {
+                            return null;
+                          }
                           String ddl = ddlResult.getAsString("Create Table");
                           return DDLData.builder()
                               .env(env)
@@ -38,6 +37,7 @@ public class MysqlMetadataReader implements MetadataReader {
                               .ddl(ddl)
                               .build();
                         })
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList()))
         .flatMap(List::stream)
         .filter(ddl -> Objects.nonNull(ddl.getDdl()))

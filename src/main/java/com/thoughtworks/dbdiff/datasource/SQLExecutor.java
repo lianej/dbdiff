@@ -7,6 +7,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 public class SQLExecutor {
 
@@ -29,8 +30,18 @@ public class SQLExecutor {
     return jdbcTemplate.queryForList(sql, String.class);
   }
 
+  public List<Map<String, Object>> queryForList(String sql) {
+    return jdbcTemplate.queryForList(sql);
+  }
+
   public MapWrapper queryForMap(String sql) {
-    ConsolePrinter.print("exec sql:", sql);
-    return new MapWrapper(jdbcTemplate.queryForMap(sql));
+    try{
+      ConsolePrinter.print("exec sql:", sql);
+      return new MapWrapper(jdbcTemplate.queryForMap(sql));
+
+    }catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
   }
 }
