@@ -12,7 +12,7 @@ DB-diff
 这是一个命令行工具, 需要先使用maven进行打包, 然后使用java -jar来执行
 ```shell
 mvn clean package
-java -jar target/dbdiff.jar -o /local/git/repo/path -e qa,uat -d /path/to/db.json
+mvn clean package && java -jar target/dbdiff.jar -r localGit -o /output-path -e qa,uat
 ```
 命令会将不同环境数据库实例的ddl以git branch的形式进行导出, 并处理类似auto-id不同等差异
 
